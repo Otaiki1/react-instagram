@@ -82,15 +82,6 @@ nav {
   margin-top: 0.5em;
 }
 
-@media screen and (max-width: 600px) {
-  .profile-photo {
-    width: 5em;
-    height: 5em;
-    margin-top: 3em;
-    margin-right: 2em;
-  }
-}
-
 .profile-photo img {
   width: 100%;
   height: 100%;
@@ -160,6 +151,7 @@ nav {
   grid-template-columns: 1fr 1fr 1fr;
   row-gap: 1.7em;
   column-gap: 1em;
+  width: 100%;
 }
 
 .item {
@@ -231,4 +223,41 @@ nav {
   bottom: 6em;
   right: 12em;
   cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 0 5%;
+  }
+  .profile-photo {
+    width: 5em;
+    height: 5em;
+    margin-top: 3em;
+    margin-right: 2em;
+  }
+  .bio {
+    padding: 0.5rem;
+  }
+  .edit-bio-form input {
+    width: 100%;
+  }
+  .search {
+    width: 10em;
+  }
+  .nav-links button {
+    margin-left: 1rem;
+  }
+  .gallery {
+    row-gap: 0.2em;
+    column-gap: 0.2em;
+  }
+  .item {
+    height: 9em;
+    width: 9em;
+  }
+  .add-photo-button {
+    bottom: 2em;
+  }
+  .delete-all > i {
+    bottom: 2.4em;
+  }
 }
