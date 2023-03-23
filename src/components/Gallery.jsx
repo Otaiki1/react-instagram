@@ -1,8 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import getPhotoUrl from 'get-photo-url'
-import { useState } from 'react'
+import { useState, CSSProperties } from 'react'
 import { db } from '../dexie'
-import Modal from './Modal'
+import Modal from './Modal';
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 const Gallery = () => {
   const allPhotos = useLiveQuery(() => db.gallery.toArray(), [])
@@ -19,6 +21,11 @@ const Gallery = () => {
     setShowModal(false)
   }
 
+  const override= {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+  };
 
   return (
     <div>
@@ -29,7 +36,7 @@ const Gallery = () => {
 
       <section className="gallery">
         
-        {!allPhotos && <p>Loading...</p>}
+       
         {allPhotos?.map((photo) => (
           <div className="item" key={photo.id}>
             <img src={photo.url} className="item-image" alt="" />
@@ -40,8 +47,17 @@ const Gallery = () => {
           </div>
         ))}
       </section>
-        
-      {!(allPhotos.length > 0) && <h1 className='modal-text'>NO IMAGES IN GALLERY, CLICK THE + ICON TO ADD IMAGE</h1>}
+      {!allPhotos && <div>
+          <ClipLoader
+        color="blue"
+        loading={true}
+        cssOverride={override}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+          </div>}
+      {allPhotos ?( allPhotos.length ==0 ? <h1 className='modal-text'>NO IMAGES IN GALLERY, CLICK THE + ICON TO ADD IMAGE</h1>: "" ): ""}
     </div>
   )
 }
