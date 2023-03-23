@@ -221,3 +221,8 @@ nav {
 .modal-cancel{
   background-color: #890000
 }
+.modal-text{
+  color: #890000;
+  text-align: center;
+
+}

@@ -40,8 +40,10 @@ const Gallery = () => {
           </div>
         ))}
       </section>
+        
+      {!(allPhotos.length > 0) && <h1 className='modal-text'>NO IMAGES IN GALLERY, CLICK THE + ICON TO ADD IMAGE</h1>}
     </div>
   )
 }
 
-export default Gallery
+export default Gallery;
