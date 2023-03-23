@@ -1,33 +1,32 @@
-import { useLiveQuery } from 'dexie-react-hooks'
-import getPhotoUrl from 'get-photo-url'
-import { useState} from 'react'
-import { db } from '../dexie'
-import Modal from './Modal';
+import { useLiveQuery } from "dexie-react-hooks";
+import getPhotoUrl from "get-photo-url";
+import { useState } from "react";
+import { db } from "../dexie";
+import Modal from "./Modal";
 import ClipLoader from "react-spinners/ClipLoader";
 
-
 const Gallery = () => {
-  const allPhotos = useLiveQuery(() => db.gallery.toArray(), [])
+  const allPhotos = useLiveQuery(() => db.gallery.toArray(), []);
   const [showModal, setShowModal] = useState(false);
   const [showDelAllModal, setShowDelAllModal] = useState(false);
 
   const addPhoto = async () => {
     db.gallery.add({
-      url: await getPhotoUrl('#addPhotoInput'),
-    })
-  }
+      url: await getPhotoUrl("#addPhotoInput"),
+    });
+  };
 
   const removePhoto = (id) => {
-    db.gallery.delete(id)
-    setShowModal(false)
-  }
+    db.gallery.delete(id);
+    setShowModal(false);
+  };
 
   const removeAllPhotos = () => {
     db.gallery.clear();
     setShowDelAllModal(false);
-  }
+  };
 
-  const override= {
+  const override = {
     display: "block",
     margin: "0 auto",
     borderColor: "red",
@@ -42,34 +41,59 @@ const Gallery = () => {
       <button onClick={() => setShowDelAllModal(true)} className="delete-all">
         <i className="fas fa-trash"></i>
       </button>
-      {showDelAllModal && <Modal cancelHandler={() => setShowDelAllModal(false)} confirmHandler={removeAllPhotos} modalText="Are you sure you want to delete all photos?" />}
-
+      {showDelAllModal && (
+        <Modal
+          cancelHandler={() => setShowDelAllModal(false)}
+          confirmHandler={removeAllPhotos}
+          modalText="Are you sure you want to delete all photos?"
+        />
+      )}
 
       <section className="gallery">
-
         {allPhotos?.map((photo) => (
           <div className="item" key={photo.id}>
             <img src={photo.url} className="item-image" alt="" />
-            <button className="delete-button" onClick={() => setShowModal(true)}>
+            <button
+              className="delete-button"
+              onClick={() => setShowModal(true)}
+            >
               Delete
             </button>
-            {showModal && <Modal cancelHandler={() => setShowModal(false)} confirmHandler={() => removePhoto(photo.id)} modalText="Are you sure you want to delete?"/>}
+            {showModal && (
+              <Modal
+                cancelHandler={() => setShowModal(false)}
+                confirmHandler={() => removePhoto(photo.id)}
+                modalText="Are you sure you want to delete?"
+              />
+            )}
           </div>
         ))}
       </section>
-      {!allPhotos && <div>
+      {!allPhotos && (
+        <div>
           <ClipLoader
-        color="blue"
-        loading={true}
-        cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-          </div>}
-      {allPhotos ?( allPhotos.length ===0 ? <h1 className='modal-text'>NO IMAGES IN GALLERY, CLICK THE + ICON TO ADD IMAGE</h1>: "" ): ""}
+            color="blue"
+            loading={true}
+            cssOverride={override}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      )}
+      {allPhotos ? (
+        allPhotos.length === 0 ? (
+          <h1 className="modal-text">
+            NO IMAGES IN GALLERY, CLICK THE + ICON TO ADD IMAGE
+          </h1>
+        ) : (
+          ""
+        )
+      ) : (
+        ""
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default Gallery;

@@ -1,5 +1,5 @@
-import { Bio, Gallery, Nav } from './components'
-import './App.css'
+import { Bio, Gallery, Nav } from "./components";
+import "./App.css";
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
         <Gallery />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
