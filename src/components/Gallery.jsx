@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import getPhotoUrl from 'get-photo-url'
-import { useState, CSSProperties } from 'react'
+import { useState} from 'react'
 import { db } from '../dexie'
 import Modal from './Modal';
 import ClipLoader from "react-spinners/ClipLoader";
@@ -9,6 +9,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 const Gallery = () => {
   const allPhotos = useLiveQuery(() => db.gallery.toArray(), [])
   const [showModal, setShowModal] = useState(false);
+  const [showDelAllModal, setShowDelAllModal] = useState(false);
 
   const addPhoto = async () => {
     db.gallery.add({
@@ -22,7 +23,8 @@ const Gallery = () => {
   }
 
   const removeAllPhotos = () => {
-    db.gallery.clear()
+    db.gallery.clear();
+    setShowDelAllModal(false);
   }
 
   const override= {
@@ -37,9 +39,10 @@ const Gallery = () => {
       <label htmlFor="addPhotoInput" onClick={addPhoto}>
         <i className="add-photo-button fas fa-plus-square" />
       </label>
-      <button onClick={removeAllPhotos} className="delete-all">
+      <button onClick={() => setShowDelAllModal(true)} className="delete-all">
         <i className="fas fa-trash"></i>
       </button>
+      {showDelAllModal && <Modal cancelHandler={() => setShowDelAllModal(false)} confirmHandler={removeAllPhotos} modalText="Are you sure you want to delete all photos?" />}
 
 
       <section className="gallery">
@@ -50,7 +53,7 @@ const Gallery = () => {
             <button className="delete-button" onClick={() => setShowModal(true)}>
               Delete
             </button>
-            {showModal && <Modal cancelHandler={() => setShowModal(false)} confirmHandler={() => removePhoto(photo.id)} />}
+            {showModal && <Modal cancelHandler={() => setShowModal(false)} confirmHandler={() => removePhoto(photo.id)} modalText="Are you sure you want to delete?"/>}
           </div>
         ))}
       </section>
@@ -64,7 +67,7 @@ const Gallery = () => {
         data-testid="loader"
       />
           </div>}
-      {allPhotos ?( allPhotos.length ==0 ? <h1 className='modal-text'>NO IMAGES IN GALLERY, CLICK THE + ICON TO ADD IMAGE</h1>: "" ): ""}
+      {allPhotos ?( allPhotos.length ===0 ? <h1 className='modal-text'>NO IMAGES IN GALLERY, CLICK THE + ICON TO ADD IMAGE</h1>: "" ): ""}
     </div>
   )
 }
