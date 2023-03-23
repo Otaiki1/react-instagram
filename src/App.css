@@ -226,3 +226,10 @@ nav {
   text-align: center;
 
 }
+.delete-all >i {
+  transform: scale(3);
+  position: fixed;
+  bottom: 6em;
+  right: 12em;
+  cursor: pointer;
+}

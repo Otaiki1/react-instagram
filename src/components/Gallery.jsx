@@ -21,6 +21,10 @@ const Gallery = () => {
     setShowModal(false)
   }
 
+  const removeAllPhotos = () => {
+    db.gallery.clear()
+  }
+
   const override= {
     display: "block",
     margin: "0 auto",
@@ -33,10 +37,13 @@ const Gallery = () => {
       <label htmlFor="addPhotoInput" onClick={addPhoto}>
         <i className="add-photo-button fas fa-plus-square" />
       </label>
+      <button onClick={removeAllPhotos} className="delete-all">
+        <i className="fas fa-trash"></i>
+      </button>
+
 
       <section className="gallery">
-        
-       
+
         {allPhotos?.map((photo) => (
           <div className="item" key={photo.id}>
             <img src={photo.url} className="item-image" alt="" />
