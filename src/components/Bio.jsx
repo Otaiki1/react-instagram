@@ -1,5 +1,6 @@
+import { useLiveQuery } from 'dexie-react-hooks'
 import getPhotoUrl from 'get-photo-url'
-import { useEffect, useState } from 'react'
+import {useState } from 'react'
 import profileIcon from '../assets/profileIcon.svg'
 import { db } from '../dexie'
 
@@ -8,19 +9,14 @@ const Bio = () => {
     name: 'Ebenezer Don',
     about: 'Building Newdev.io - Learn to code and connect with the best minds.',
   })
-  const [editFormIsOpen, setEditFormIsOpen] = useState(false)
-  const [profilePhoto, setProfilePhoto] = useState(profileIcon)
 
-  useEffect(() => {
-    const setDataFromDb = async () => {
-      const userDetailsFromDb = await db.bio.get('info')
-      const profilePhotoFromDb = await db.bio.get('profilePhoto')
-      userDetailsFromDb && setUserDetails(userDetailsFromDb)
-      profilePhotoFromDb && setProfilePhoto(profilePhotoFromDb)
-    }
+  const userInfo = useLiveQuery(() => db.bio.get("info"), []);
+  const userDp = useLiveQuery(() => db.bio.get("profilePhoto"), []);
 
-    setDataFromDb()
-  }, [])
+  // console.log(userInfo, userDp)
+
+  const[editFormIsOpen, setEditFormIsOpen] = useState(false)
+
 
   const updateUserDetails = async (event) => {
     event.preventDefault()
@@ -29,14 +25,12 @@ const Bio = () => {
       about: event.target.aboutUser.value,
     }
 
-    setUserDetails(objectData)
     await db.bio.put(objectData, 'info')
     setEditFormIsOpen(false)
   }
 
   const updateProfilePhoto = async () => {
     const newProfilePhoto = await getPhotoUrl('#profilePhotoInput')
-    setProfilePhoto(newProfilePhoto)
     await db.bio.put(newProfilePhoto, 'profilePhoto')
   }
 
@@ -59,13 +53,13 @@ const Bio = () => {
       <input type="file" accept="image/*" name="photo" id="profilePhotoInput" />
       <label htmlFor="profilePhotoInput" onClick={updateProfilePhoto}>
         <div className="profile-photo" role="button" title="Click to edit photo">
-          <img src={profilePhoto} alt="profile" />
+          <img src={userDp ? userDp : profileIcon} alt="profile" />
         </div>
       </label>
 
       <div className="profile-info">
-        <p className="name">{userDetails?.name}</p>
-        <p className="about">{userDetails?.about}</p>
+        <p className="name">{userInfo? userInfo.name : "Input Username"}</p>
+        <p className="about">{userInfo? userInfo.about  : "Input About"}</p>
 
         {editFormIsOpen ? editForm : editButton}
       </div>
