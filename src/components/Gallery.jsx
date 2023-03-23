@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import getPhotoUrl from 'get-photo-url'
 import { db } from '../dexie'
+import Modal from './Modal'
 
 const Gallery = () => {
   const allPhotos = useLiveQuery(() => db.gallery.toArray(), [])
@@ -23,6 +24,7 @@ const Gallery = () => {
       </label>
 
       <section className="gallery">
+        <Modal />
         {!allPhotos && <p>Loading...</p>}
         {allPhotos?.map((photo) => (
           <div className="item" key={photo.id}>

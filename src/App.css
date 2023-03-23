@@ -199,3 +199,25 @@ nav {
 .item:hover .delete-button {
   opacity: 1;
 }
+
+.modal{
+  position: absolute;
+  top: 40%;
+  width: 50%;
+  left: 25%;
+  background: #fff;
+  padding: 1.3rem 0.8rem;
+  text-align: center;
+}
+.modal-buttons > button{
+    padding: 15px;
+    margin: 2px 0.5rem;
+    color: white;
+    font-size: 1rem;
+}
+.modal-confirm{
+  background-color: #0081d6;
+}
+.modal-cancel{
+  background-color: #890000
+}
